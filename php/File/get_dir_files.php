@@ -16,6 +16,9 @@ function read_dir($dir, $dest_type=array('jpg','png','gif')){
 	if (!isset($destfile)){
 		$destfile = array();
 	}
+	if (count($dest_type) == 0 || empty($dest_type)){
+		$dest_type = array('*');
+	}
 	foreach ($files as $file){
 		if (is_dir($file)){
 			$sub_destfile = read_dir($file,$dest_type);
@@ -26,7 +29,7 @@ function read_dir($dir, $dest_type=array('jpg','png','gif')){
 		else{
 			$info = pathinfo($file);
 			$extend = strtolower($info["extension"]);
-			if ( in_array($extend, $dest_type) ){
+			if ( in_array($extend, $dest_type) || array_shift($dest_type)=='*' ){
 				array_push($destfile, $file);
 			}
 			else {
